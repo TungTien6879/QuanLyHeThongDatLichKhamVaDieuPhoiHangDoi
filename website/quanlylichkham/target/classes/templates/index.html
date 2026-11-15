@@ -1,0 +1,15 @@
+<!doctype html><html lang="vi" xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MEDCARE — Đặt lịch khám</title><link rel="stylesheet" href="/css/site.css"></head><body>
+<header>
+  <a href="/" class="logo">✚ MEDCARE</a>
+  <nav>
+    <a href="/">Trang chủ</a>
+    <a th:if="${daDangNhap}" href="/bang-dieu-khien">Bảng điều khiển</a>
+    <a th:if="${daDangNhap}" href="/dat-lich">Đặt lịch</a>
+    <a th:unless="${daDangNhap}" href="/dang-nhap">Đăng nhập</a>
+    <a th:unless="${daDangNhap}" href="/dang-ky">Đăng ký</a>
+    <form th:if="${daDangNhap}" action="/dang-xuat" method="post" class="inline">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+      <button class="navbtn" type="submit">Đăng xuất</button>
+    </form>
+  </nav>
+</header><main><div th:if="${message}" class="alert ok" th:text="${message}"></div><div th:if="${error}" class="alert err" th:text="${error}"></div><section class="hero"><div><span class="tag">QUẢN LÝ KHÁM BỆNH</span><h1>Đặt lịch dễ dàng.<br><em>Theo dõi lượt khám rõ ràng.</em></h1><p>Chọn bác sĩ và khung giờ, làm thủ tục tiếp nhận, xem thời gian chờ dự kiến và nhận thông báo thay đổi.</p><a class="btn" href="/dat-lich">Đặt lịch khám ngay</a><a class="btn ghost" href="/dang-ky">Tạo tài khoản</a></div><div class="heroArt"><div class="plus">✚</div><strong>Chăm sóc theo lịch hẹn</strong><p>Giảm trùng lịch · Minh bạch lượt chờ</p></div></section><h2>Những chức năng chính</h2><section class="cards"><article><b>01</b><h3>Đặt lịch</h3><p>Chọn bác sĩ, chuyên khoa và thời điểm khám còn trống.</p></article><article><b>02</b><h3>Hàng đợi</h3><p>Xem lượt khám sau khi check-in và thời gian ước tính.</p></article><article><b>03</b><h3>Ưu tiên xác nhận</h3><p>Nhân viên ghi lý do và xác nhận mức ưu tiên; hệ thống không tự phân loại cấp cứu.</p></article><article><b>04</b><h3>Thông báo</h3><p>Nhận cập nhật trạng thái trong tài khoản bệnh nhân.</p></article></section><h2>Danh sách bác sĩ</h2><div class="cards"><article th:each="d:${doctors}"><div class="avatar">✚</div><h3 th:text="${d.taiKhoan.hoTen}"></h3><p th:text="${d.chuyenKhoa}"></p><small th:text="${d.phongKham}"></small></article></div><p th:if="${#lists.isEmpty(doctors)}" class="muted">Chưa có bác sĩ. Quản trị viên có thể thêm bác sĩ trong trang quản trị.</p></main><footer>MEDCARE · Hệ thống đặt lịch khám và điều phối hàng đợi · Thời gian chờ chỉ là ước tính; mức ưu tiên do nhân viên xác nhận.</footer></body></html>

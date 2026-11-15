@@ -1,0 +1,15 @@
+<!doctype html><html lang="vi" xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MEDCARE — Đặt lịch khám</title><link rel="stylesheet" href="/css/site.css"></head><body>
+<header>
+  <a href="/" class="logo">✚ MEDCARE</a>
+  <nav>
+    <a href="/">Trang chủ</a>
+    <a th:if="${daDangNhap}" href="/bang-dieu-khien">Bảng điều khiển</a>
+    <a th:if="${daDangNhap}" href="/dat-lich">Đặt lịch</a>
+    <a th:unless="${daDangNhap}" href="/dang-nhap">Đăng nhập</a>
+    <a th:unless="${daDangNhap}" href="/dang-ky">Đăng ký</a>
+    <form th:if="${daDangNhap}" action="/dang-xuat" method="post" class="inline">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+      <button class="navbtn" type="submit">Đăng xuất</button>
+    </form>
+  </nav>
+</header><main><div th:if="${message}" class="alert ok" th:text="${message}"></div><div th:if="${error}" class="alert err" th:text="${error}"></div><span class="tag">QUẢN TRỊ VIÊN</span><h1>Quản trị MEDCARE</h1><section class="cards"><article><b th:text="${#lists.size(users)}">0</b><h3>Tài khoản</h3></article><article><b th:text="${#lists.size(doctors)}">0</b><h3>Bác sĩ</h3></article><article><b th:text="${appointmentCount}">0</b><h3>Lịch hẹn</h3></article></section><div class="panel"><h2>Tạo tài khoản bác sĩ / nhân viên</h2><p class="muted">Chỉ quản trị viên cấp vai trò. Bệnh nhân tự đăng ký qua trang công khai.</p><form action="/admin/tao-tai-khoan" method="post" class="formgrid"><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"><label>Họ tên<input name="hoTen" required></label><label>Email<input name="email" type="email" required></label><label>Mật khẩu cấp mới<input name="password" type="password" minlength="10" required></label><label>Vai trò<select name="vaiTro"><option value="BAC_SI">Bác sĩ</option><option value="NHAN_VIEN">Nhân viên</option></select></label><label>Chuyên khoa (nếu bác sĩ)<input name="chuyenKhoa" placeholder="Nội tổng quát"></label><label>Phòng khám (nếu bác sĩ)<input name="phongKham" placeholder="P101"></label><button class="btn">Tạo tài khoản</button></form></div><h2>Danh sách tài khoản</h2><div class="tableWrap"><table><thead><tr><th>ID</th><th>Họ tên</th><th>Email</th><th>Vai trò</th></tr></thead><tbody><tr th:each="u:${users}"><td th:text="${u.id}"></td><td th:text="${u.hoTen}"></td><td th:text="${u.email}"></td><td th:text="${u.vaiTro}"></td></tr></tbody></table></div></main><footer>MEDCARE · Hệ thống đặt lịch khám và điều phối hàng đợi · Thời gian chờ chỉ là ước tính; mức ưu tiên do nhân viên xác nhận.</footer></body></html>

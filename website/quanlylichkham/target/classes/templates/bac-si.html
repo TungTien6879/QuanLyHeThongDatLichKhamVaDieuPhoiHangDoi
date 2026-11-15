@@ -1,0 +1,15 @@
+<!doctype html><html lang="vi" xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MEDCARE — Đặt lịch khám</title><link rel="stylesheet" href="/css/site.css"></head><body>
+<header>
+  <a href="/" class="logo">✚ MEDCARE</a>
+  <nav>
+    <a href="/">Trang chủ</a>
+    <a th:if="${daDangNhap}" href="/bang-dieu-khien">Bảng điều khiển</a>
+    <a th:if="${daDangNhap}" href="/dat-lich">Đặt lịch</a>
+    <a th:unless="${daDangNhap}" href="/dang-nhap">Đăng nhập</a>
+    <a th:unless="${daDangNhap}" href="/dang-ky">Đăng ký</a>
+    <form th:if="${daDangNhap}" action="/dang-xuat" method="post" class="inline">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+      <button class="navbtn" type="submit">Đăng xuất</button>
+    </form>
+  </nav>
+</header><main><div th:if="${message}" class="alert ok" th:text="${message}"></div><div th:if="${error}" class="alert err" th:text="${error}"></div><span class="tag">BÁC SĨ</span><h1>Lịch và lượt khám của bác sĩ</h1><p class="muted">Chỉ được gọi và hoàn tất những lượt khám thuộc tài khoản bác sĩ đang đăng nhập.</p><div class="tableWrap"><table><thead><tr><th>Mã</th><th>Bệnh nhân</th><th>Giờ hẹn</th><th>Check-in</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody><tr th:each="h:${appointments}"><td th:text="${h.id}"></td><td th:text="${h.benhNhan.hoTen}"></td><td th:text="${#temporals.format(h.gioKham,'dd/MM HH:mm')}"></td><td th:text="${h.daCheckin?'Đã đến':'Chưa đến'}"></td><td th:text="${@trangThaiHienThi.ten(h.trangThai)}"></td><td><form th:if="${h.daCheckin and h.trangThai == 'DA_XAC_NHAN'}" th:action="@{'/bac-si/'+${h.id}+'/bat-dau'}" method="post"><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"><button class="small">Gọi vào khám</button></form><form th:if="${h.trangThai == 'DANG_KHAM'}" th:action="@{'/bac-si/'+${h.id}+'/hoan-tat'}" method="post"><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"><button class="small">Hoàn tất</button></form></td></tr></tbody></table></div></main><footer>MEDCARE · Hệ thống đặt lịch khám và điều phối hàng đợi · Thời gian chờ chỉ là ước tính; mức ưu tiên do nhân viên xác nhận.</footer></body></html>
